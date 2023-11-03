@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
-"""A module for encrypting passwords.
+"""A module for filtering logs.
 """
-import bcrypt
+import re
+from typing import List
 
 
-def hash_password(password: str) -> bytes:
-    """Hashes a password using a random salt.
-    """
-    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+patterns = {
+    'extract': lambda x, y: r'(?P<field>{})=[^{}]*'.format('|'.join(x), y),
+    'replace': lambda x: r'\g<field>={}'.format(x),
+}
 
 
-def is_valid(hashed_password: bytes, password: str) -> bool:
-    """Checks is a hashed password was formed from the given password.
-    """
-    return bcrypt.checkpw(password.encode('utf-8'), hashed_password)
+def filter_datum(
+        fields: List[str], redaction: str, message: str, separator: str,
+        ) -> str:
+    """Returns the log message obfuscated"""
+    extract, replace = (patterns["extract"], patterns["replace"])
+    return re.sub(extract(fields, separator), replace(redaction), message)
