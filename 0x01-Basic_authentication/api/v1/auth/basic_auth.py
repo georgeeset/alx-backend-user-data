@@ -45,4 +45,3 @@ class BasicAuth(Auth):
             return None, None
         splited = decoded_base64_authorization_header.split(':')
         return (splited[0], splited[1])
-    
