@@ -3,7 +3,7 @@
 Basic API authentication module
 """
 
-from ast import TypeVar
+from typing import TypeVar
 from base64 import b64decode
 from api.v1.auth.auth import Auth
 from models.user import User
