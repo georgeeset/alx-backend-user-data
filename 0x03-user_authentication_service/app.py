@@ -9,7 +9,8 @@ from auth import Auth
 
 app = Flask(__name__)
 AUTH = Auth()
-strict_slashes=False
+strict_slashes = False
+
 
 @app.route("/", methods=["GET"])
 def index() -> str:
